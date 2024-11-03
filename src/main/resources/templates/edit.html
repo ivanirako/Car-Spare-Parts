@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoSpare - Edit Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --metal-gray: #5a6268;
+            --oil-black: #1c1c1c;
+            --rubber-dark: #3a3a3a;
+            --chrome-silver: #c0c0c0;
+            --warning-orange: #ffa500;
+        }
+
+        body {
+            background-image: url('/api/placeholder/1920/1080');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            font-family: 'Roboto', sans-serif;
+            color: var(--oil-black);
+        }
+
+        .navbar {
+            background-color: var(--rubber-dark);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            color: var(--chrome-silver) !important;
+        }
+
+        .nav-link {
+            color: var(--chrome-silver) !important;
+            margin-left: 15px;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--warning-orange) !important;
+        }
+
+        .card {
+            background-color: rgba(255, 255, 255, 0.9);
+            border: none;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            margin-top: 40px;
+        }
+
+        .card-header {
+            background-color: var(--metal-gray);
+            color: var(--chrome-silver);
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .form-label {
+            font-weight: bold;
+            color: var(--rubber-dark);
+        }
+
+        .form-control {
+            border-radius: 5px;
+            padding: 10px 10px 10px 35px;
+            border: 1px solid var(--metal-gray);
+        }
+
+        .form-control:focus {
+            box-shadow: 0 0 0 0.2rem rgba(90, 98, 104, 0.25);
+            border-color: var(--metal-gray);
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 10px;
+            top: 38px;
+            color: var(--metal-gray);
+        }
+
+        .btn-primary {
+            background-color: var(--metal-gray);
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--rubber-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: var(--chrome-silver);
+            border: none;
+            color: var(--rubber-dark);
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--warning-orange);
+            color: var(--oil-black);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .card {
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#"><i class="fas fa-cogs"></i> AutoSpare</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fas fa-home"></i> Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fas fa-car-alt"></i> Parts Catalog</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i> Cart</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fas fa-user"></i> Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </li>
+            </ul>
+            <form class="d-flex">
+                <input class="form-control me-2" type="search" placeholder="Search parts..." aria-label="Search">
+                <button class="btn btn-outline-light" type="submit"><i class="fas fa-search"></i></button>
+            </form>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row col-md-8 offset-md-2">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="text-center"><i class="fas fa-user-cog"></i> Edit Profile</h2>
+            </div>
+            <div th:if="${param.success}">
+                <div class="alert alert-info">
+                    <i class="fas fa-check-circle"></i> Your profile has been updated successfully!
+                </div>
+            </div>
+            <div class="card-body">
+                <form method="post" role="form" th:action="@{/users/update/{id}(id=${user.id})}" th:object="${user}">
+                    <input type="hidden" th:field="*{id}" />
+                    <div class="form-group mb-3">
+                        <label for="firstName" class="form-label">First Name</label>
+                        <i class="fas fa-user input-icon"></i>
+                        <input class="form-control" id="firstName" name="firstName" placeholder="Enter first name" th:field="*{firstName}" type="text" />
+                        <p th:errors="*{firstName}" class="text-danger" th:if="${#fields.hasErrors('firstName')}"></p>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="lastName" class="form-label">Last Name</label>
+                        <i class="fas fa-user input-icon"></i>
+                        <input class="form-control" id="lastName" name="lastName" placeholder="Enter last name" th:field="*{lastName}" type="text" />
+                        <p th:errors="*{lastName}" class="text-danger" th:if="${#fields.hasErrors('lastName')}"></p>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <i class="fas fa-envelope input-icon"></i>
+                        <input class="form-control" id="email" name="email" placeholder="Enter email address" th:field="*{email}" type="email" readonly />
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="phoneNumber" class="form-label">Phone Number</label>
+                        <i class="fas fa-phone input-icon"></i>
+                        <input class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Enter phone number" th:field="*{phoneNumber}" type="text" />
+                        <p th:errors="*{phoneNumber}" class="text-danger" th:if="${#fields.hasErrors('phoneNumber')}"></p>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="dateOfBirth" class="form-label">Date of Birth</label>
+                        <i class="fas fa-calendar input-icon"></i>
+                        <input class="form-control" id="dateOfBirth" name="dateOfBirth" th:field="*{dateOfBirth}" type="date" />
+                        <p th:errors="*{dateOfBirth}" class="text-danger" th:if="${#fields.hasErrors('dateOfBirth')}"></p>
+                    </div>
+
+                    <div class="form-group">
+                        <button class="btn btn-primary" type="submit"><i class="fas fa-save"></i> Update Profile</button>
+                        <a href="#" class="btn btn-secondary"><i class="fas fa-times"></i> Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const inputs = document.querySelectorAll('.form-control');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.style.boxShadow = '0 0 0 0.2rem rgba(90, 98, 104, 0.25)';
+            });
+            input.addEventListener('blur', function() {
+                this.style.boxShadow = 'none';
+            });
+        });
+
+        const updateBtn = document.querySelector('.btn-primary');
+        updateBtn.addEventListener('mouseover', function() {
+            this.innerHTML = '<i class="fas fa-wrench"></i> Tune Up Profile';
+        });
+        updateBtn.addEventListener('mouseout', function() {
+            this.innerHTML = '<i class="fas fa-save"></i> Update Profile';
+        });
+    });
+</script>
+</body>
+</html>
