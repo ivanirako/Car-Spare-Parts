@@ -40,7 +40,8 @@ public class ProfileController {
         return "redirect:/dashboard";
     }
 
-    @GetMapping("/download-profile")
+    // @GetMapping("/download-profile")
+    @GetMapping("/api/v2.0/download-profile")
     public ResponseEntity<Resource> downloadFileFaster(@RequestParam("fileName") String filename) {
         try {
             var fileToDownload = fileStorageService.getDownloadFile(filename);

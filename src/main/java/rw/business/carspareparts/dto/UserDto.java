@@ -3,10 +3,12 @@ package rw.business.carspareparts.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Past;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+// import lombok.AllArgsConstructor;
+// import lombok.Getter;
+// import lombok.NoArgsConstructor;
+// import lombok.Setter;
+import lombok.*;
+import rw.business.carspareparts.entity.User;
 
 import java.time.LocalDate;
 
@@ -14,6 +16,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class UserDto {
 
     private Long id;
@@ -30,4 +33,17 @@ public class UserDto {
     private String phoneNumber;
     @Past(message = "Date of birth should be in the past")
     private LocalDate dateOfBirth;
+
+    
+    public static UserDto fromUser(User user){
+        return UserDto.builder()
+                .id(user.getId())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .email(user.getEmail())
+                .password(user.getPassword())
+                .phoneNumber(user.getPhoneNumber())
+                .dateOfBirth(user.getDateOfBirth())
+                .build();
+    }
 }
